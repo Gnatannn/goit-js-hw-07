@@ -1,6 +1,8 @@
 import { galleryItems } from "./gallery-items.js";
 // Change code below this line
 
+const gallery = document.querySelector(".gallery");
+
 const imgMarkup = galleryItems
   .map((galleryItem) => {
     return `<div class="gallery__item">
@@ -15,49 +17,39 @@ const imgMarkup = galleryItems
   })
   .join("");
 
-const gallery = document.querySelector(".gallery");
 gallery.insertAdjacentHTML("afterbegin", imgMarkup);
 gallery.addEventListener("click", onImgClick);
 
-// let instance;
+let modalWindow;
 
-// function onModalClose() {
-//   instance.close();
-// }
-
-// function onEscClose(event) {
-//   const ESC_KEY_CLOSE = "Escape";
-//   if (event.code === ESC_KEY_CLOSE) {
-//     onModalClose();
-//   }
-// }
+function onEscClose(event) {
+  const ESC_KEY_CLOSE = "Escape";
+  if (event.code === ESC_KEY_CLOSE) {
+    modalWindow.close();
+  }
+}
 
 function onImgClick(event) {
   //   console.log(event.target.dataset.sourse);
   event.preventDefault();
-  const instance = basicLightbox.create(
-    `
-      <img src="${event.target.dataset.sourse}">`,
-    {
-      onShow: (instance) => {
-        // window.addEventListener("keydown", onEscClose);
-        document.onkeydown = function (evt) {
-          evt = evt || window.event;
-          var isEscape = false;
-          if ("key" in evt) {
-            isEscape = evt.key === "Escape" || evt.key === "Esc";
-          } else {
-            isEscape = evt.keyCode === 27;
-          }
-          if (isEscape) {
-            instance.close();
-          }
-        };
-      },
-      //   onClose: (instance) => {
-      //     window.removeEventListener("keydown", onEscClose);
-      //   },
-    }
-  );
-  instance.show();
+  const onImgClick = event.target.nodeName === "IMG";
+
+  if (!onImgClick) {
+    return;
+  }
+
+  const modalImgTemplate = `
+  <div class="modal">
+  <img src="${event.target.dataset.sourse}" alt="${event.target.alt}">
+  </div>`;
+
+  modalWindow = basicLightbox.create(modalImgTemplate, {
+    onShow: (modalWindow) => {
+      window.addEventListener("keydown", onEscClose);
+    },
+    onClose: (modalWindow) => {
+      window.removeEventListener("keydown", onEscClose);
+    },
+  });
+  modalWindow.show();
 }
