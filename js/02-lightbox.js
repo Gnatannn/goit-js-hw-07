@@ -14,15 +14,17 @@ const imgMarkup = galleryItems
 
 const gallery = document.querySelector(".gallery");
 gallery.insertAdjacentHTML("afterbegin", imgMarkup);
-gallery.addEventListener("click", onImgClick);
+// gallery.addEventListener("click", onImgClick);
 
-function onImgClick(event) {
-  event.preventDefault();
-  const lightbox = new SimpleLightbox(".gallery a", {
-    captions: true,
-    captionType: "attr",
-    captionPosition: "bottom",
-    captionDelay: 250,
-    captionsData: "alt",
-  });
-}
+const lightbox = new SimpleLightbox(".gallery a", {
+  captions: true,
+  captionType: "attr",
+  captionPosition: "bottom",
+  captionDelay: 250,
+  captionsData: "alt",
+});
+
+// function onImgClick(event) {
+//   event.preventDefault();
+
+// }
